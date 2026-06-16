@@ -2,7 +2,7 @@
 
 Autoregressive neural-network sampling of lattice spin and gauge configurations using a **Gated PixelCNN** architecture. The network learns the Boltzmann distribution of the model directly, enabling efficient generation of statistically independent configurations as an alternative to traditional Markov Chain Monte Carlo (MCMC).
 
-> **[VERIFY] Relationship to publication.** This repository contains code associated with the work published as:
+>This repository contains code associated with the work published as:
 > *"Simulation of the Ising model using a hierarchical autoregressive network in three spatial dimensions,"* **Computer Physics Communications** 318 (2026) 109892.
 > *(If this repo is a separate/earlier Gated-PixelCNN implementation rather than the exact published code, reword this line accordingly — e.g. "an earlier autoregressive approach related to the methods in...".)*
 
@@ -41,7 +41,7 @@ the network can **directly generate** a configuration in a single forward pass a
 |------|--------------------|
 | `3d_ising_pixel.py` | Main script for the **3D Ising** model — builds the 3D Gated PixelCNN, trains it, and samples configurations. |
 | `gate_pixel.py` | The **Gated PixelCNN architecture** — masked convolutions and gated activation units that enforce the autoregressive ordering. |
-| `gate_ising.py` | Ising-specific model setup — energy/Hamiltonian, Boltzmann weights, and the training loop tying the network to the Ising distribution. |
+| `gate_ising.py` | Again, the **Gated PixelCNN architecture with residual connections** — masked convolutions and gated activation units that enforce the autoregressive ordering. |
 | `py_func.py` | Utility functions — observables (energy, magnetization), reweighting, I/O, and analysis helpers. |
 | `README.md` | This file. |
 
@@ -59,13 +59,12 @@ the network can **directly generate** a configuration in a single forward pass a
 
 ## Requirements
 
-> **[VERIFY versions and framework]** — fill in what you actually used.
 
 ```
 python >= 3.x
-[PyTorch or TensorFlow — specify which]
 numpy
 matplotlib
+torch
 ```
 
 ```bash
@@ -74,30 +73,8 @@ pip install -r requirements.txt   # [add a requirements.txt if not present]
 
 ---
 
-## Usage
 
-> **[VERIFY commands and arguments]** — replace with the real entry points and flags.
 
-```bash
-# Train and sample the 3D Ising model
-python 3d_ising_pixel.py   # [add arguments: lattice size, temperature, epochs, etc.]
-```
-
-**[Add a short example: what the script outputs, where results/figures are written, and roughly how long a run takes / what hardware — e.g. trained on JUWELS / PLGrid multi-GPU nodes.]**
-
----
-
-## Results
-
-**[Add 1-2 key results here — this is the most important section for a visitor.]**
-Suggested content:
-- A figure comparing the network-sampled observables (energy or magnetization vs temperature) against exact / MCMC results, showing they agree.
-- The headline efficiency claim — e.g. reduced autocorrelation / sampling-efficiency gain over MCMC, and the largest lattice reached (up to 32³).
-- Embed an image with: `![Energy vs temperature](figures/energy_vs_T.png)`
-
-A single good plot here does more than any amount of prose.
-
----
 
 ## Citation
 
@@ -116,9 +93,3 @@ If you use this code, please cite:
 ```
 
 ---
-
-## References
-
-- van den Oord et al., *Conditional Image Generation with PixelCNN Decoders* (Gated PixelCNN), 2016.
-- Wu, Wang, Zhang, *Solving Statistical Mechanics using Variational Autoregressive Networks*, Phys. Rev. Lett. 2019.
-- **[VERIFY]** Add the Wegner-model and any hierarchical-autoregressive references central to your paper.
