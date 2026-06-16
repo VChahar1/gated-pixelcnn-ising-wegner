@@ -27,15 +27,13 @@ the network can **directly generate** a configuration in a single forward pass a
 ## What this repository does
 
 - Implements a Gated PixelCNN that models the conditional distributions of lattice configurations.
-- Trains the network (via the variational / KL objective against the Boltzmann distribution) to sample the 2D and 3D Ising model. **[VERIFY: training objective — confirm whether you used the variational free-energy loss, maximum-likelihood on MCMC samples, or another scheme.]**
+- Trains the network (via the variational / KL objective against the Boltzmann distribution) to sample the 2D and 3D Ising model. 
 - Extends the approach to the **Wegner model** (lattice gauge theory).
-- Compares sampling quality and efficiency against baseline MCMC. **[VERIFY: which baselines and metrics — e.g. autocorrelation time, free-energy estimate, magnetization.]**
+- Compares sampling quality and efficiency against baseline MCMC
 
 ---
 
 ## Repository structure
-
-> **[VERIFY all file descriptions below]** — these are inferred from filenames; correct any that are wrong.
 
 | File | Purpose (inferred) |
 |------|--------------------|
@@ -51,7 +49,7 @@ the network can **directly generate** a configuration in a single forward pass a
 
 1. **Factorize** the joint distribution over lattice sites into autoregressive conditionals.
 2. **Model** each conditional with a Gated PixelCNN, masked so site `i` sees only sites `< i`.
-3. **Train** the network so its distribution matches the target Boltzmann distribution at temperature `T`. **[VERIFY objective]**
+3. **Train** the network so its distribution matches the target Boltzmann distribution at temperature `T`
 4. **Sample** configurations in a single forward pass, with exact known probabilities.
 5. **Reweight / estimate** thermodynamic observables (energy, magnetization, specific heat) and compare against MCMC.
 
@@ -68,7 +66,7 @@ torch
 ```
 
 ```bash
-pip install -r requirements.txt   # [add a requirements.txt if not present]
+pip install -r requirements.txt  
 ```
 
 ---
@@ -83,12 +81,11 @@ If you use this code, please cite:
 ```bibtex
 @article{Chahar2026Ising,
   title   = {Simulation of the Ising model using a hierarchical autoregressive network in three spatial dimensions},
-  author  = {Chahar, Vaibhav and [VERIFY co-authors]},
+  author  = {Chahar, Vaibhav et al.},
   journal = {Computer Physics Communications},
   volume  = {318},
   pages   = {109892},
-  year    = {2026},
-  doi     = {[VERIFY DOI]}
+  year    = {2026}
 }
 ```
 
