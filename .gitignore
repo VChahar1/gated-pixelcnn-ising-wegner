@@ -1,0 +1,20 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.env.*
+!.env.example
+*credentials*
+*.pem
+*.key
+# Generated training artifacts and large arrays
+*_logs_*/
+checkpoint*
+*.ckpt
+*.pt
+*.pth
+*.npy
+*.npz
+Mag_*.txt

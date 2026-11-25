@@ -1,0 +1,6 @@
+# Direct imports and the training driver's TensorBoard logging backend.
+numpy
+torch
+pytorch-lightning
+lightning
+tensorboard
