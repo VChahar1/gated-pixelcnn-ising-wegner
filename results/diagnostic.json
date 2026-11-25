@@ -1,0 +1,9 @@
+{
+  "kind": "CPU diagnostic, no training",
+  "L": 3,
+  "beta": 0.22,
+  "energies": [
+    -17.81999969482422,
+    -15.180000305175781
+  ]
+}
