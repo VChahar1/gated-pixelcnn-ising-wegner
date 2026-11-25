@@ -1,45 +1,41 @@
-# PixelCNN research code for Ising and Wegner models
+# Gated PixelCNN Ising/Wegner research code
 
-Masked-convolution neural-network code for autoregressive lattice sampling. The runnable training entry point in this snapshot targets the three-dimensional Ising model. Shared modules also contain other Ising and gauge-model energy functions; separate end-to-end drivers for those experiments are not included.
+Masked-convolution networks provide autoregressive lattice sampling, with a runnable GPU training driver for the three-dimensional Ising model.
 
-| File | Role in the code |
-|---|---|
-| `3d_ising_pixel.py` | Lightning training driver, sequential spin sampling, variational loss and effective-sample-size logging. |
-| `gate_pixel.py` | Residual masked-convolution network used by the current driver. |
-| `gate_ising.py` | Alternative multi-stack masked-convolution implementation. |
-| `py_func.py` | Network components and Ising/gauge energy helpers. Import this module; it is not a standalone command. |
+**CPU checks cover masked-site causality, finite probabilities and known Ising energies.** TODO: validated training observables, sampling accuracy and speed; no quantitative research benchmark is saved.
 
-The sampler fills lattice sites sequentially and calls the network repeatedly. This repository does not contain saved quantitative benchmarks or an executable MCMC comparison, so no sampling-speed or accuracy result is claimed here.
+![Known-configuration energy diagnostic, without training](assets/results.png)
 
-## How to run
+## Quick start
 
-Create an environment from the repository root:
+From the repository root, install the pinned CPU validation environment:
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python 3d_ising_pixel.py --help
+.venv/bin/pip install -r requirements-dev.txt
+.venv/bin/python -m pytest -q
 ```
 
-Requirements follow the actual imports: NumPy, PyTorch, both Lightning import namespaces used by the driver, and TensorBoard for logging. Choose a PyTorch build compatible with your GPU and driver before installing the remaining requirements if necessary.
+For training, choose a PyTorch build compatible with your CUDA environment. The driver requires a GPU; pass `--dev 0` explicitly because the default is inconsistent with list handling. Use `python 3d_ising_pixel.py --help` for the actual arguments. GPU training was not run during cleanup.
 
-The training driver explicitly uses the GPU accelerator. Pass `--dev` explicitly, because its current default is inconsistent with the list handling in the script. The example already present in the source comments is:
+## Method
 
-```bash
-python 3d_ising_pixel.py --beta 0.22 --batch 1500 --L 8 --epochs 1 --lr 0.003 --dev 0
-```
+- Residual masked three-dimensional convolutions define conditional spin probabilities.
+- The sampler fills lattice sites sequentially, calling the network repeatedly.
+- Lightning manages training and TensorBoard logging.
+- A variational loss combines log probability with periodic Ising energy.
+- Other Ising and gauge energy helpers are included; separate end-to-end Wegner drivers are absent.
 
-This is an example configuration, not a benchmark or a validated physics result. The driver creates experiment logs and may write checkpoints and observable files in the working directory. Review its epoch-dependent save conditions before a longer run. It does not offer a CPU training option in its current command-line interface.
+## Results
 
-## Validation and limitations
+[Saved CPU diagnostic](results/diagnostic.json) evaluates explicit configurations, not trained samples. At lattice length three and beta 0.22, the aligned energy is −17.82 and a single flipped spin gives −15.18, agreeing with the periodic nearest-neighbour formula. `python scripts/diagnostic.py` regenerates the chart without external data.
 
-There is no automated test suite in this snapshot. Syntax, imports and command-line help can be checked without training. Full training and physics validation require a suitable GPU environment and were not run during this cleanup. Model code is unchanged.
+## What didn't work
 
-TODO: establish a pinned GPU training environment, add numerical and sampling checks, and save reproducible observables before reporting performance or physics accuracy.
+This snapshot does not establish a trained sampling advantage or reproduce a published physics benchmark. CPU tests cannot validate GPU training, thermodynamic observables or effective sample size. TODO: save reproducible training results and confirm the exact relationship to the [related publication](https://arxiv.org/abs/2503.08610).
 
-## Related publication
+## Tests, structure and licence
 
-[Hierarchical autoregressive neural networks in three-dimensional statistical system](https://arxiv.org/abs/2503.08610), Piotr Białas, Vaibhav Chahar, Piotr Korcyl, Tomasz Stebel, Mateusz Winiarski and Dawid Zapolski. *Computer Physics Communications* **318** (2026), 109892. [DOI](https://doi.org/10.1016/j.cpc.2025.109892).
+[![Tests](https://github.com/VChahar1/gated-pixelcnn-ising-wegner/actions/workflows/tests.yml/badge.svg)](https://github.com/VChahar1/gated-pixelcnn-ising-wegner/actions/workflows/tests.yml)
 
-TODO: confirm the exact relationship between this repository snapshot and the published implementation before labelling this as the paper's reproduction code.
+`tests/` contains CPU numerical checks. `3d_ising_pixel.py` is the driver, `gate_pixel.py` is its active network, `gate_ising.py` is an alternative, and `py_func.py` contains energy helpers. Code: [MIT](LICENSE).

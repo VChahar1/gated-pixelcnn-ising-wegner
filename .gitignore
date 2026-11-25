@@ -18,3 +18,5 @@ checkpoint*
 *.npy
 *.npz
 Mag_*.txt
+
+.ruff_cache/

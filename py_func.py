@@ -670,7 +670,8 @@ def energy_ising2d(j, m, IM, M, a):
     return Plaq.type(torch.float32).squeeze()
 
 
-def energy_ising3d(j, m, IM, M, a):
+def energy_ising3d(j: int, m: int, IM: torch.Tensor, M: list, a: float) -> torch.Tensor:
+    """Calculate the periodic nearest-neighbour Ising energy for a spin batch."""
     Nu1 = torch.zeros((j, m, m, m), dtype=torch.float32)
     IM = IM.squeeze(1)
     Plaq = torch.zeros((j, 1), dtype=torch.float32)
